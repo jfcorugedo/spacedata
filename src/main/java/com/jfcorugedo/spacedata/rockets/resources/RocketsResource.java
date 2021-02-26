@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.reactive.function.client.WebClientResponseException.NotFound;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -32,9 +32,10 @@ public class RocketsResource {
                 .retrieve()
                 .bodyToMono(Rocket.class);
 
-        return result.map(rocket -> {
-            log.info("Es un OK!! " + rocket); return ResponseEntity.ok(rocket);
-        }).onErrorReturn(WebClientResponseException.NotFound.class, ResponseEntity.notFound().build())
-        .defaultIfEmpty(ResponseEntity.notFound().build());
+        return result
+                .doOnNext(rocket -> log.info(rocket.toString()))
+                .map(ResponseEntity::ok)
+                .onErrorReturn(NotFound.class, ResponseEntity.notFound().build())
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }
