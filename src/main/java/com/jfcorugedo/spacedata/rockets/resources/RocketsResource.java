@@ -23,7 +23,7 @@ public class RocketsResource {
 
     @GetMapping("{name}")
     public Mono<ResponseEntity<Rocket>> getRocket(@PathVariable String name) {
-        log.info("Getting rocket ".concat(name));
+        log.info("Getting rocket ".concat(baseUrl.concat(name)));
 
         WebClient client = WebClient.create(baseUrl.concat(name));
 
@@ -35,7 +35,6 @@ public class RocketsResource {
         return result
                 .doOnNext(rocket -> log.info(rocket.toString()))
                 .map(ResponseEntity::ok)
-                .onErrorReturn(NotFound.class, ResponseEntity.notFound().build())
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+                .onErrorReturn(NotFound.class, ResponseEntity.notFound().build());
     }
 }
