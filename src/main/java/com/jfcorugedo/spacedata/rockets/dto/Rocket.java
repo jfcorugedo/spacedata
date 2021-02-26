@@ -14,4 +14,7 @@ public class Rocket {
 
     @JsonProperty("cost_per_launch")
     private int costPerLaunch;
+
+    @JsonProperty("success_rate_pct")
+    private double successRatePct;
 }

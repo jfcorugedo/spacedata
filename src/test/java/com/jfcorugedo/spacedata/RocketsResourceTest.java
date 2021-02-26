@@ -41,6 +41,7 @@ class RocketsResourceTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.rocket_name").isEqualTo("Falcon 9")
-                .jsonPath("$.cost_per_launch").isEqualTo(50000000);
+                .jsonPath("$.cost_per_launch").isEqualTo(50000000)
+                .jsonPath("$.success_rate_pct").isEqualTo(97);
     }
 }
