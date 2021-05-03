@@ -49,6 +49,16 @@
 			<artifactId>wiremock-jre8</artifactId>
 			<version>2.27.2</version>
 			<scope>test</scope>
+            <exclusions>
+				<exclusion>
+					<groupId>org.opentest4j</groupId>
+					<artifactId>opentest4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 
@@ -64,6 +74,40 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.4.1</version>
+				<executions>
+					<execution>
+						<id>enforce-maven-version-and-dependencies</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.3.9</version>
+								</requireMavenVersion>
+								<bannedDependencies>
+									<excludes>
+										<exclude>*:commons-logging:*:jar:compile</exclude>
+										<exclude>*:log4j:*:jar:compile</exclude>
+									</excludes>
+									<searchTransitive>true</searchTransitive>
+								</bannedDependencies>
+								<dependencyConvergence />
+								<requireJavaVersion>
+									<version>[11,)</version>
+								</requireJavaVersion>
+							</rules>
+							<fail>true</fail>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<fail>true</fail>
 				</configuration>
 			</plugin>
 		</plugins>
